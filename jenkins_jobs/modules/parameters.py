@@ -391,6 +391,34 @@ def extended_choice_param(registry, xml_parent, data):
         'description-property-key', '')
 
 
+def extended_choice_json_param(parser, xml_parent, data):
+    """yaml: extended-choice-json
+    Creates an extended choice parameter using JSON.
+    Requires the Jenkins :jenkins-wiki:`Extended Choice Parameter Plugin
+    <Extended+Choice+Parameter+plugin>`.
+
+    :arg str name: name of the parameter
+    :arg str description: description of the parameter (optional, default '')
+    :arg bool quote-value: if true, parameters passed to jenkins will be quoted
+        (optional, default 'false')
+    :arg bool save-json-value: if true json value will be saved to a file
+        (optional, default false)
+    :arg int visible-item: number of items that should be visible at one time
+        (optional, default 5)
+    :arg str groovy-script: string containing the json-information
+    """
+
+    pdef = base_param(parser, xml_parent, data, False,
+                      'com.cwctravel.hudson.plugins.'\
+                      'extended__choice__parameter.'\
+                      'ExtendedChoiceParameterDefinition')
+    XML.SubElement(pdef, 'quoteValue').text = data.get('quote-value', '')
+    XML.SubElement(pdef, 'saveJSONParameterToFile').text = str(data.get('save-json-value', ''))
+    XML.SubElement(pdef, 'visibleItemCount').text = str(data.get('visible-item', 5))
+    XML.SubElement(pdef, 'groovyScript').text = data.get('groovy-script', '')
+    XML.SubElement(pdef, 'type').text = 'PT_JSON'
+
+
 def validating_string_param(registry, xml_parent, data):
     """yaml: validating-string
     A validating string parameter
